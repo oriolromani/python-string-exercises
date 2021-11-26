@@ -2,6 +2,7 @@
 Python string manipulation exercises 
 from https://igotanoffer.com/blogs/tech/string-interview-questions
 """
+import itertools
 
 def longest_substring_no_repetitions(s):
     """
@@ -62,3 +63,50 @@ def string_to_integer(s):
                 sign = -1
     return int(clean_string) * sign
 
+def reduced_string(k, s):
+    """
+    Given a string s and an integer k, the task is to reduce the 
+    string by applying the following operation:
+    Choose a group of k consecutive identical characters and remove them.
+    The operation can be performed any number of times until 
+    it is no longer possible.
+    """
+    indexes_to_remove = set()
+    do_not_check = []
+    for i in range(len(s)- k):
+        if i in do_not_check:
+            continue
+        if len(set(s[i:i+k])) == 1:
+            indexes_to_remove.update(range(i, i+k))
+            do_not_check = range(i, i+k+1)
+    if not indexes_to_remove:
+        return s
+    else:
+        new_string = ""
+        for i, c in enumerate(s):
+            if i not in indexes_to_remove:
+                new_string += c
+        return reduced_string(k, new_string)
+
+def find_longest_word(s, d):
+    """
+    Given a string and a string dictionary, 
+    find the longest string in the dictionary 
+    that can be formed by deleting some characters 
+    of the given string. 
+    If there are more than one possible results, 
+    return the longest word with the smallest lexicographical order. 
+    If there is no possible result, return the empty string.
+    TODO: optimise performance
+    """
+    max_len = 0
+    results = []
+    for l in range(1, len(s)):
+        for subset in itertools.combinations(s, l):
+            word = "".join(subset)
+            if word in d and len(word) > max_len:
+                results.append(word)
+                max_len = len(word)
+    max_results = [result for result in results if len(result) == max_len]
+    max_results.sort()
+    return max_results[0]

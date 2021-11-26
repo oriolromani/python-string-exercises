@@ -2,7 +2,9 @@ import unittest
 from functions import (
     longest_substring_no_repetitions,
     longest_palindromic_substring,
-    string_to_integer
+    string_to_integer,
+    reduced_string,
+    find_longest_word
     )
 
 class TestLongestSubstringNoRepetitions(unittest.TestCase):
@@ -40,6 +42,22 @@ class TestStringToInt(unittest.TestCase):
         self.assertEqual(-42, result)
         result = string_to_integer("4193 with words")
         self.assertEqual(4193, result)
+
+
+class TestReducedString(unittest.TestCase):
+
+    def test_reduced_string(self):
+        result = reduced_string(2, "geeksforgeeks")
+        self.assertEqual("gksforgks", result)
+
+
+class TestLongestWord(unittest.TestCase):
+
+    def test_longest_word(self):
+        d = {"ale", "apple", "monkey", "plea"}
+        s = "abpcplea"
+        result = find_longest_word(s, d)
+        self.assertEqual("apple", result)
     
 
 if __name__ == '__main__':
